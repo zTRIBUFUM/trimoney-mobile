@@ -1,0 +1,720 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import dp kivy.metrics.dp
+#:import sp kivy.metrics.sp
+
+<ItemDespesa>:
+    size_hint_y: None
+    height: dp(70)
+    padding: dp(10)
+    spacing: dp(10)
+    
+    canvas.before:
+        Color:
+            rgba: get_color_from_hex("#2D3047") if root.selecionada else get_color_from_hex("#1E2132")
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(5),]
+    
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_x: 0.7
+        
+        Label:
+            text: root.nome
+            font_size: sp(14)
+            bold: True
+            color: get_color_from_hex("#FFFFFF")
+            size_hint_y: 0.6
+            text_size: self.width, None
+            halign: 'left'
+            valign: 'middle'
+        
+        BoxLayout:
+            size_hint_y: 0.4
+            spacing: dp(10)
+            
+            Label:
+                text: root.categoria
+                font_size: sp(12)
+                color: get_color_from_hex("#B0BEC5")
+                size_hint_x: 0.4
+                text_size: self.width, None
+                halign: 'left'
+                valign: 'middle'
+            
+            Label:
+                text: root.vencimento
+                font_size: sp(12)
+                color: get_color_from_hex("#B0BEC5")
+                size_hint_x: 0.6
+                text_size: self.width, None
+                halign: 'left'
+                valign: 'middle'
+    
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_x: 0.3
+        spacing: dp(5)
+        
+        Label:
+            text: root.valor
+            font_size: sp(14)
+            bold: True
+            color: get_color_from_hex("#FFFFFF")
+            size_hint_y: 0.6
+            text_size: self.width, None
+            halign: 'right'
+            valign: 'middle'
+        
+        Label:
+            text: root.status
+            font_size: sp(11)
+            color: root.cor_status
+            size_hint_y: 0.4
+            text_size: self.width, None
+            halign: 'right'
+            valign: 'middle'
+
+<TelaBase>:
+    name: 'base'
+    
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(5)
+        
+        # Cabeçalho
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            padding: [dp(10), dp(5)]
+            
+            canvas.before:
+                Color:
+                    rgba: get_color_from_hex("#16213E")
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            
+            Label:
+                text: "TRIMONEY"
+                font_size: sp(20)
+                bold: True
+                color: get_color_from_hex("#4CAF50")
+                size_hint_x: 0.5
+                text_size: self.width, None
+                halign: 'left'
+                valign: 'middle'
+            
+            Label:
+                id: lbl_alertas
+                text: ""
+                font_size: sp(12)
+                color: get_color_from_hex("#FF9800")
+                size_hint_x: 0.5
+                text_size: self.width, None
+                halign: 'right'
+                valign: 'middle'
+                opacity: 0
+        
+        # Conteúdo principal
+        BoxLayout:
+            orientation: 'vertical'
+            padding: [dp(10), 0]
+            
+            ScrollView:
+                do_scroll_x: False
+                
+                # Conteúdo específico de cada tela vai aqui
+                # Será substituído pelas telas filhas
+        
+        # Menu inferior
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            padding: [dp(5), dp(5)]
+            spacing: dp(5)
+            
+            canvas.before:
+                Color:
+                    rgba: get_color_from_hex("#16213E")
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            
+            Button:
+                text: "Resumo"
+                font_size: sp(12)
+                background_normal: ''
+                background_color: get_color_from_hex("#0F3460") if app.root.current == 'resumo' else get_color_from_hex("#1A1A2E")
+                color: get_color_from_hex("#FFFFFF")
+                on_press: app.root.current = 'resumo'
+            
+            Button:
+                text: "Despesas"
+                font_size: sp(12)
+                background_normal: ''
+                background_color: get_color_from_hex("#0F3460") if app.root.current == 'despesas' else get_color_from_hex("#1A1A2E")
+                color: get_color_from_hex("#FFFFFF")
+                on_press: app.root.current = 'despesas'
+            
+            Button:
+                text: "Nova"
+                font_size: sp(12)
+                background_normal: ''
+                background_color: get_color_from_hex("#0F3460") if app.root.current == 'nova_despesa' else get_color_from_hex("#1A1A2E")
+                color: get_color_from_hex("#FFFFFF")
+                on_press: app.root.current = 'nova_despesa'
+            
+            Button:
+                text: "Saldo"
+                font_size: sp(12)
+                background_normal: ''
+                background_color: get_color_from_hex("#0F3460") if app.root.current == 'saldo' else get_color_from_hex("#1A1A2E")
+                color: get_color_from_hex("#FFFFFF")
+                on_press: app.root.current = 'saldo'
+
+<TelaResumo>:
+    name: 'resumo'
+    
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(15)
+        padding: [dp(10), dp(10)]
+        
+        Label:
+            text: "Resumo Financeiro"
+            font_size: sp(18)
+            bold: True
+            color: get_color_from_hex("#FFFFFF")
+            size_hint_y: None
+            height: dp(30)
+            text_size: self.width, None
+            halign: 'center'
+            valign: 'middle'
+        
+        GridLayout:
+            cols: 2
+            spacing: dp(10)
+            size_hint_y: 0.6
+            
+            # Cartão Saldo Atual
+            BoxLayout:
+                orientation: 'vertical'
+                padding: dp(15)
+                spacing: dp(5)
+                
+                canvas.before:
+                    Color:
+                        rgba: get_color_from_hex("#4CAF50")
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(10),]
+                
+                Label:
+                    text: "Saldo Atual"
+                    font_size: sp(14)
+                    color: get_color_from_hex("#FFFFFF")
+                    size_hint_y: 0.3
+                    text_size: self.width, None
+                    halign: 'center'
+                    valign: 'middle'
+                
+                Label:
+                    id: saldo_atual
+                    text: "R$ 0,00"
+                    font_size: sp(18)
+                    bold: True
+                    color: get_color_from_hex("#FFFFFF")
+                    size_hint_y: 0.7
+                    text_size: self.width, None
+                    halign: 'center'
+                    valign: 'middle'
+            
+            # Cartão Total Gasto
+            BoxLayout:
+                orientation: 'vertical'
+                padding: dp(15)
+                spacing: dp(5)
+                
+                canvas.before:
+                    Color:
+                        rgba: get_color_from_hex("#2196F3")
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(10),]
+                
+                Label:
+                    text: "Total Gasto"
+                    font_size: sp(14)
+                    color: get_color_from_hex("#FFFFFF")
+                    size_hint_y: 0.3
+                    text_size: self.width, None
+                    halign: 'center'
+                    valign: 'middle'
+                
+                Label:
+                    id: total_gasto
+                    text: "R$ 0,00"
+                    font_size: sp(18)
+                    bold: True
+                    color: get_color_from_hex("#FFFFFF")
+                    size_hint_y: 0.7
+                    text_size: self.width, None
+                    halign: 'center'
+                    valign: 'middle'
+            
+            # Cartão Total Pendente
+            BoxLayout:
+                orientation: 'vertical'
+                padding: dp(15)
+                spacing: dp(5)
+                
+                canvas.before:
+                    Color:
+                        rgba: get_color_from_hex("#FF9800")
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(10),]
+                
+                Label:
+                    text: "Pendente"
+                    font_size: sp(14)
+                    color: get_color_from_hex("#FFFFFF")
+                    size_hint_y: 0.3
+                    text_size: self.width, None
+                    halign: 'center'
+                    valign: 'middle'
+                
+                Label:
+                    id: total_pendente
+                    text: "R$ 0,00"
+                    font_size: sp(18)
+                    bold: True
+                    color: get_color_from_hex("#FFFFFF")
+                    size_hint_y: 0.7
+                    text_size: self.width, None
+                    halign: 'center'
+                    valign: 'middle'
+            
+            # Cartão Saldo Final
+            BoxLayout:
+                id: card_saldo_final
+                orientation: 'vertical'
+                padding: dp(15)
+                spacing: dp(5)
+                
+                canvas.before:
+                    Color:
+                        rgba: get_color_from_hex("#9C27B0")
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(10),]
+                
+                Label:
+                    text: "Saldo Final"
+                    font_size: sp(14)
+                    color: get_color_from_hex("#FFFFFF")
+                    size_hint_y: 0.3
+                    text_size: self.width, None
+                    halign: 'center'
+                    valign: 'middle'
+                
+                Label:
+                    id: saldo_final
+                    text: "R$ 0,00"
+                    font_size: sp(18)
+                    bold: True
+                    color: get_color_from_hex("#FFFFFF")
+                    size_hint_y: 0.7
+                    text_size: self.width, None
+                    halign: 'center'
+                    valign: 'middle'
+        
+        # Espaço para estatísticas extras
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 0.4
+            spacing: dp(10)
+            
+            Label:
+                text: "Ações Rápidas"
+                font_size: sp(16)
+                bold: True
+                color: get_color_from_hex("#FFFFFF")
+                size_hint_y: None
+                height: dp(25)
+                text_size: self.width, None
+                halign: 'center'
+                valign: 'middle'
+            
+            BoxLayout:
+                spacing: dp(10)
+                
+                Button:
+                    text: "Ver Todas Despesas"
+                    font_size: sp(14)
+                    background_normal: ''
+                    background_color: get_color_from_hex("#0F3460")
+                    color: get_color_from_hex("#FFFFFF")
+                    on_press: app.root.current = 'despesas'
+                
+                Button:
+                    text: "Adicionar Saldo"
+                    font_size: sp(14)
+                    background_normal: ''
+                    background_color: get_color_from_hex("#4CAF50")
+                    color: get_color_from_hex("#FFFFFF")
+                    on_press: app.root.current = 'saldo'
+
+<TelaDespesas>:
+    name: 'despesas'
+    
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(10)
+        padding: [dp(10), dp(10)]
+        
+        # Cabeçalho da lista
+        BoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(10)
+            
+            Label:
+                text: "Despesas"
+                font_size: sp(18)
+                bold: True
+                color: get_color_from_hex("#FFFFFF")
+                size_hint_x: 0.4
+                text_size: self.width, None
+                halign: 'left'
+                valign: 'middle'
+            
+            Spinner:
+                id: spinner_filtro
+                text: "Todas"
+                values: ["Todas", "Pendentes", "Pagas", "Vencidas", "Próximas"]
+                size_hint_x: 0.4
+                font_size: sp(14)
+                background_color: get_color_from_hex("#0F3460")
+                color: get_color_from_hex("#FFFFFF")
+                on_text: root.atualizar_lista()
+            
+            Button:
+                text: "↻"
+                font_size: sp(16)
+                size_hint_x: 0.2
+                background_normal: ''
+                background_color: get_color_from_hex("#2196F3")
+                color: get_color_from_hex("#FFFFFF")
+                on_press: root.atualizar_lista()
+        
+        # Lista de despesas
+        ScrollView:
+            do_scroll_x: False
+            
+            GridLayout:
+                id: lista_despesas_container
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(5)
+                padding: [dp(5), dp(5)]
+                
+                # Itens serão adicionados dinamicamente
+        
+        # Controles
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            spacing: dp(10)
+            padding: [0, dp(5)]
+            
+            Button:
+                id: btn_pagar
+                text: "💰 Pagar"
+                font_size: sp(14)
+                background_normal: ''
+                background_color: get_color_from_hex("#4CAF50")
+                color: get_color_from_hex("#FFFFFF")
+                disabled: True
+                on_press: root.pagar_despesa()
+            
+            Button:
+                id: btn_excluir
+                text: "🗑 Excluir"
+                font_size: sp(14)
+                background_normal: ''
+                background_color: get_color_from_hex("#FF5252")
+                color: get_color_from_hex("#FFFFFF")
+                disabled: True
+                on_press: root.excluir_despesa()
+
+<TelaNovaDespesa>:
+    name: 'nova_despesa'
+    
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(15)
+        padding: [dp(20), dp(20)]
+        
+        Label:
+            text: "Nova Despesa"
+            font_size: sp(22)
+            bold: True
+            color: get_color_from_hex("#FFFFFF")
+            size_hint_y: None
+            height: dp(40)
+            text_size: self.width, None
+            halign: 'center'
+            valign: 'middle'
+        
+        ScrollView:
+            do_scroll_x: False
+            
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(15)
+                
+                # Campo Nome
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: dp(70)
+                    spacing: dp(5)
+                    
+                    Label:
+                        text: "Nome da Despesa:"
+                        font_size: sp(14)
+                        color: get_color_from_hex("#B0BEC5")
+                        size_hint_y: None
+                        height: dp(20)
+                        text_size: self.width, None
+                        halign: 'left'
+                        valign: 'middle'
+                    
+                    TextInput:
+                        id: nome_input
+                        font_size: sp(16)
+                        multiline: False
+                        padding: [dp(10), dp(10)]
+                        background_normal: ''
+                        background_color: get_color_from_hex("#2D3047")
+                        foreground_color: get_color_from_hex("#FFFFFF")
+                        cursor_color: get_color_from_hex("#4CAF50")
+                        hint_text: "Ex: Aluguel, Supermercado..."
+                
+                # Campo Valor
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: dp(70)
+                    spacing: dp(5)
+                    
+                    Label:
+                        text: "Valor (R$):"
+                        font_size: sp(14)
+                        color: get_color_from_hex("#B0BEC5")
+                        size_hint_y: None
+                        height: dp(20)
+                        text_size: self.width, None
+                        halign: 'left'
+                        valign: 'middle'
+                    
+                    TextInput:
+                        id: valor_input
+                        font_size: sp(16)
+                        multiline: False
+                        input_filter: 'float'
+                        padding: [dp(10), dp(10)]
+                        background_normal: ''
+                        background_color: get_color_from_hex("#2D3047")
+                        foreground_color: get_color_from_hex("#FFFFFF")
+                        cursor_color: get_color_from_hex("#4CAF50")
+                        hint_text: "0,00"
+                
+                # Campo Data
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: dp(70)
+                    spacing: dp(5)
+                    
+                    Label:
+                        text: "Data de Vencimento:"
+                        font_size: sp(14)
+                        color: get_color_from_hex("#B0BEC5")
+                        size_hint_y: None
+                        height: dp(20)
+                        text_size: self.width, None
+                        halign: 'left'
+                        valign: 'middle'
+                    
+                    TextInput:
+                        id: data_input
+                        font_size: sp(16)
+                        multiline: False
+                        padding: [dp(10), dp(10)]
+                        background_normal: ''
+                        background_color: get_color_from_hex("#2D3047")
+                        foreground_color: get_color_from_hex("#FFFFFF")
+                        cursor_color: get_color_from_hex("#4CAF50")
+                        hint_text: "DD/MM/AAAA"
+                
+                # Campo Categoria
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: dp(70)
+                    spacing: dp(5)
+                    
+                    Label:
+                        text: "Categoria:"
+                        font_size: sp(14)
+                        color: get_color_from_hex("#B0BEC5")
+                        size_hint_y: None
+                        height: dp(20)
+                        text_size: self.width, None
+                        halign: 'left'
+                        valign: 'middle'
+                    
+                    Spinner:
+                        id: categoria_spinner
+                        text: "Fixa"
+                        values: ["Fixa", "Variável"]
+                        font_size: sp(16)
+                        background_color: get_color_from_hex("#0F3460")
+                        color: get_color_from_hex("#FFFFFF")
+        
+        # Botão de adicionar
+        Button:
+            text: "➕ ADICIONAR DESPESA"
+            font_size: sp(16)
+            bold: True
+            size_hint_y: None
+            height: dp(50)
+            background_normal: ''
+            background_color: get_color_from_hex("#4CAF50")
+            color: get_color_from_hex("#FFFFFF")
+            on_press: root.adicionar_despesa()
+
+<TelaSaldo>:
+    name: 'saldo'
+    
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(20)
+        padding: [dp(20), dp(20)]
+        
+        Label:
+            text: "Gerenciar Saldo"
+            font_size: sp(22)
+            bold: True
+            color: get_color_from_hex("#FFFFFF")
+            size_hint_y: None
+            height: dp(40)
+            text_size: self.width, None
+            halign: 'center'
+            valign: 'middle'
+        
+        # Saldo atual
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: dp(100)
+            padding: dp(15)
+            spacing: dp(10)
+            
+            canvas.before:
+                Color:
+                    rgba: get_color_from_hex("#0F3460")
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(10),]
+            
+            Label:
+                text: "Saldo Disponível"
+                font_size: sp(16)
+                color: get_color_from_hex("#B0BEC5")
+                size_hint_y: None
+                height: dp(25)
+                text_size: self.width, None
+                halign: 'center'
+                valign: 'middle'
+            
+            Label:
+                text: app.gerenciador.formatar_moeda(app.gerenciador.saldo) if app.gerenciador else "R$ 0,00"
+                font_size: sp(24)
+                bold: True
+                color: get_color_from_hex("#4CAF50")
+                size_hint_y: None
+                height: dp(40)
+                text_size: self.width, None
+                halign: 'center'
+                valign: 'middle'
+        
+        # Campo para valor
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: dp(90)
+            spacing: dp(5)
+            
+            Label:
+                text: "Valor (R$):"
+                font_size: sp(16)
+                color: get_color_from_hex("#B0BEC5")
+                size_hint_y: None
+                height: dp(25)
+                text_size: self.width, None
+                halign: 'left'
+                valign: 'middle'
+            
+            TextInput:
+                id: saldo_input
+                font_size: sp(18)
+                multiline: False
+                input_filter: 'float'
+                padding: [dp(15), dp(15)]
+                background_normal: ''
+                background_color: get_color_from_hex("#2D3047")
+                foreground_color: get_color_from_hex("#FFFFFF")
+                cursor_color: get_color_from_hex("#4CAF50")
+                hint_text: "0,00"
+        
+        # Botões
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: dp(120)
+            spacing: dp(10)
+            
+            Button:
+                text: "ATUALIZAR SALDO"
+                font_size: sp(16)
+                bold: True
+                size_hint_y: None
+                height: dp(50)
+                background_normal: ''
+                background_color: get_color_from_hex("#2196F3")
+                color: get_color_from_hex("#FFFFFF")
+                on_press: root.atualizar_saldo()
+            
+            Button:
+                text: "ADICIONAR AO SALDO"
+                font_size: sp(16)
+                bold: True
+                size_hint_y: None
+                height: dp(50)
+                background_normal: ''
+                background_color: get_color_from_hex("#4CAF50")
+                color: get_color_from_hex("#FFFFFF")
+                on_press: root.adicionar_saldo()
