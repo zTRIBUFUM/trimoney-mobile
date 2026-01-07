@@ -1,3 +1,4 @@
+[app]
 title = Trimoney
 package.name = trimoney
 package.domain = org.tribufum
@@ -15,3 +16,4 @@ android.permissions = INTERNET
 android.api = 33
 android.minapi = 21
 android.ndk = 25b
+
