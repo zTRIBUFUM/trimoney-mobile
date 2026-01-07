@@ -31,10 +31,11 @@ jobs:
     - name: Install Android SDK Command Line Tools
       run: |
         mkdir -p $HOME/android-sdk/cmdline-tools/latest
-        cd $HOME/android-sdk
-        wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
-        unzip cmdline-tools.zip
-        mv cmdline-tools/* cmdline-tools/latest/
+        cd $HOME/android-sdk/cmdline-tools/latest
+        wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O tools.zip
+        unzip tools.zip
+        mv cmdline-tools/* .
+        rm -rf cmdline-tools tools.zip
 
     - name: Set Android SDK environment
       run: |
