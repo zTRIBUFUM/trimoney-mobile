@@ -22,7 +22,8 @@ jobs:
         sudo apt update
         sudo apt install -y zip unzip openjdk-17-jdk \
         build-essential ccache libffi-dev libssl-dev \
-        zlib1g-dev libncurses5 libsqlite3-dev
+        zlib1g-dev libncurses-dev libsqlite3-dev \
+        liblzma-dev
 
     - name: Install Python dependencies
       run: |
