@@ -21,3 +21,8 @@ android.minapi = 21
 android.ndk = 25b
 
 android.archs = arm64-v8a
+
+# 🔴 LINHAS CRÍTICAS (OBRIGATÓRIAS)
+android.sdk = $ANDROIDSDK
+android.build_tools_version = 30.0.3
+android.accept_sdk_license = True
