@@ -3,7 +3,10 @@ title = Trimoney
 package.name = trimoney
 package.domain = org.tribufum
 
+source.dir = .
 source.include_exts = py,kv,png,jpg,ttf
+
+version = 0.1
 
 requirements = python3,kivy
 
@@ -17,3 +20,4 @@ android.api = 33
 android.minapi = 21
 android.ndk = 25b
 
+android.archs = arm64-v8a
